@@ -1,9 +1,11 @@
 package com.rick.hiddenthingsmod;
 
 import com.rick.hiddenthingsmod.blocks.HiddenChest;
+import com.rick.hiddenthingsmod.blocks.HiddenChestTile;
 import com.rick.hiddenthingsmod.items.SecretKey;
 import com.rick.hiddenthingsmod.lists.BlockList;
 import com.rick.hiddenthingsmod.lists.ItemList;
+import com.rick.hiddenthingsmod.lists.TileEntityList;
 import com.rick.hiddenthingsmod.setup.ClientProxy;
 import com.rick.hiddenthingsmod.setup.IProxy;
 import com.rick.hiddenthingsmod.setup.ModSetup;
@@ -16,6 +18,8 @@ import net.minecraft.client.audio.Sound;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
@@ -89,6 +93,13 @@ public class HiddenThingsMod {
             event.getRegistry().registerAll(
                     BlockList.hidden_chest = new HiddenChest()
             );
+
+            LOGGER.info("Blocks registered");
+        }
+
+        @SubscribeEvent
+        public static void registerTileEntity(final RegistryEvent.Register<TileEntityType<?>> event){
+            event.getRegistry().register(TileEntityType.Builder.create(HiddenChestTile::new, BlockList.hidden_chest).build(null).setRegistryName(BlockList.hidden_chest.getRegistryName()));
 
             LOGGER.info("Blocks registered");
         }

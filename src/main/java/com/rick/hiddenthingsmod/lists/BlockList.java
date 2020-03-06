@@ -1,8 +1,10 @@
 package com.rick.hiddenthingsmod.lists;
 
-
-import net.minecraft.block.Block;
+import com.rick.hiddenthingsmod.blocks.HiddenChest;
+import net.minecraftforge.registries.ObjectHolder;
 
 public class BlockList {
-    public static Block hidden_chest;
+
+    @ObjectHolder("hiddenthingsmod:hidden_chest")
+    public static HiddenChest hidden_chest;
 }
