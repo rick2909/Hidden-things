@@ -1,6 +1,7 @@
 package com.rick.hiddenthingsmod;
 
 import com.rick.hiddenthingsmod.blocks.HiddenChest;
+import com.rick.hiddenthingsmod.items.SecretKey;
 import com.rick.hiddenthingsmod.lists.BlockList;
 import com.rick.hiddenthingsmod.lists.ItemList;
 import com.rick.hiddenthingsmod.setup.ClientProxy;
@@ -74,6 +75,9 @@ public class HiddenThingsMod {
         public static void registerItems(final RegistryEvent.Register<Item> event){
             Item.Properties group = new Item.Properties().group(setup.itemGroup);
             event.getRegistry().registerAll(
+                    //items
+                    ItemList.secret_key = new SecretKey(),
+                    //blocks
                     ItemList.hidden_chest = new BlockItem(BlockList.hidden_chest, group).setRegistryName(BlockList.hidden_chest.getRegistryName())
             );
 
