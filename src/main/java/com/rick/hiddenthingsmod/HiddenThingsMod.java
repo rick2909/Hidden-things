@@ -1,5 +1,6 @@
 package com.rick.hiddenthingsmod;
 
+import com.rick.hiddenthingsmod.Screens.Containers.HiddenChestContainer;
 import com.rick.hiddenthingsmod.blocks.HiddenChest;
 import com.rick.hiddenthingsmod.blocks.HiddenChestTile;
 import com.rick.hiddenthingsmod.items.SecretKey;
@@ -15,13 +16,16 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.audio.Sound;
+import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.extensions.IForgeContainerType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
@@ -43,13 +47,13 @@ import java.util.stream.Collectors;
 @Mod("hiddenthingsmod")
 public class HiddenThingsMod {
     public static HiddenThingsMod instance;
-    public static final String modid = "hiddenthingsmod";
+    public static final String MODID = "hiddenthingsmod";
 
     public static IProxy proxy = DistExecutor.runForDist(() -> () -> new ClientProxy(), () -> () -> new ServerProxy());
     public static ModSetup setup = new ModSetup();
 
     // Directly reference a log4j logger.
-    private static final Logger LOGGER = LogManager.getLogger(modid);
+    private static final Logger LOGGER = LogManager.getLogger(MODID);
 
     public HiddenThingsMod() {
         instance = this;
@@ -104,8 +108,12 @@ public class HiddenThingsMod {
             LOGGER.info("Blocks registered");
         }
 
-        private static ResourceLocation location(String name) {
-            return new ResourceLocation(modid, name);
+        @SubscribeEvent
+        public static void registerContainer(final RegistryEvent.Register<ContainerType<?>> event){
+            event.getRegistry().register(IForgeContainerType.create(((windowId, inv, data) -> {
+                BlockPos pos = data.readBlockPos();
+                return new HiddenChestContainer(windowId, HiddenThingsMod.proxy.getClientWorld(), pos, inv, HiddenThingsMod.proxy.getClientPlayer());
+            })).setRegistryName(BlockList.hidden_chest.getRegistryName()));
         }
     }
 
