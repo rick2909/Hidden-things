@@ -1,0 +1,6 @@
+{
+  "parent": "hiddenthingsmod:block/hidden_chest",
+  "textures": {
+    "particle": "block/oak_planks"
+  }
+}

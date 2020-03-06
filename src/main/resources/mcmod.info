@@ -1,0 +1,12 @@
+[{
+  "modid": "hiddenthingsmod",
+  "name": "Hidden Things Mod",
+  "description": "It will lock and hide stuf in plainside only you would know where it is ;)",
+  "version": "1.0.0.0",
+  "mcversion": "1.15.2",
+  "logoFile": "assets/examplemod/textures/logo.png",
+  "url": "minecraftforge.net/",
+  "updateJSON": "minecraftforge.net/versions.json",
+  "authorList": ["Rick"],
+  "credits": "I'd like to thank my mother and father. Sure you guys thought more but IDK who i would like to thank more."
+}]
