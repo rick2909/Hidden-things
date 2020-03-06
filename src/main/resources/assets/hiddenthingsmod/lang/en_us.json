@@ -1,3 +1,6 @@
 {
-  "block.hiddenthingsmod.hidden_chest": "Hidden Chest"
+  "block.hiddenthingsmod.hidden_chest": "Hidden Chest",
+
+  "_comment": "Creative Tabs",
+  "itemGroup.hidden_things": "Hidden Things"
 }
