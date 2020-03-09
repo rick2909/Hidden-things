@@ -1,7 +1,6 @@
 {
-  "parent": "block/cube_all",
+  "loader": "hiddenthingsmod:hiddenchestloader",
   "textures": {
-    "all": "hiddenthingsmod:block/hidden_chest",
     "particle": "block/oak_planks"
   }
 }

@@ -11,10 +11,10 @@ public class ModSetup {
     private static final String modid = "hiddenthingsmod";
     private static final Logger LOGGER = LogManager.getLogger(modid);
 
-    public ItemGroup itemGroup = new ItemGroup("hidden_things") {
+    public static final ItemGroup itemGroup = new ItemGroup("hidden_things") {
         @Override
         public ItemStack createIcon() {
-            return new ItemStack(BlockList.hidden_chest);
+            return new ItemStack(BlockList.hidden_chest.getBlock());
         }
     };
 

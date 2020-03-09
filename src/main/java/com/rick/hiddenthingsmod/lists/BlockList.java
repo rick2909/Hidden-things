@@ -7,4 +7,7 @@ public class BlockList {
 
     @ObjectHolder("hiddenthingsmod:hidden_chest")
     public static HiddenChest hidden_chest;
+
+    @ObjectHolder("hiddenthingsmod:fancyblock")
+    public static HiddenChest FANCY_BLOCK;
 }

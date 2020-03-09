@@ -29,16 +29,15 @@ public class HiddenChestContainer extends Container {
     public HiddenChestContainer(int windowId, World world, BlockPos pos, PlayerInventory playerInventory, PlayerEntity player) {
         super(hidden_chest_container, windowId);
         this.tileEntity = world.getTileEntity(pos);
-
         this.playerEntity = player;
         this.playerInventory = new InvWrapper(playerInventory);
 
         tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY).ifPresent(h -> {
-            //addSlot(new SlotItemHandler(h,0,8,18));
+            addSlot(new SlotItemHandler(h,0,80,3));
 
-            addSlotBox(h, 0, 8, 18, 9, 18, 3, 18);
+            addSlotBox(h, 1, 8, 37, 9, 18, 3, 18);
         });
-        layoutPlayerInventorySlots(8,84);
+        layoutPlayerInventorySlots(8,103);
     }
 
     @Override
@@ -73,5 +72,34 @@ public class HiddenChestContainer extends Container {
         topRow += 58;
         addSlotRange(playerInventory, 0, leftCol, topRow, 9 ,18);
 
+    }
+
+    @Override
+    public ItemStack transferStackInSlot(PlayerEntity playerIn, int index) {
+        ItemStack returnStack = ItemStack.EMPTY;
+        final Slot slot = this.inventorySlots.get(index);
+        if (slot != null && slot.getHasStack()) {
+            final ItemStack slotStack = slot.getStack();
+            returnStack = slotStack.copy();
+
+            final int containerSlots = this.inventorySlots.size() - playerIn.inventory.mainInventory.size();
+            if (index < containerSlots) {
+                if (!mergeItemStack(slotStack, containerSlots, this.inventorySlots.size(), true)) {
+                    return ItemStack.EMPTY;
+                }
+            } else if (!mergeItemStack(slotStack, 0, containerSlots, false)) {
+                return ItemStack.EMPTY;
+            }
+            if (slotStack.getCount() == 0) {
+                slot.putStack(ItemStack.EMPTY);
+            } else {
+                slot.onSlotChanged();
+            }
+            if (slotStack.getCount() == returnStack.getCount()) {
+                return ItemStack.EMPTY;
+            }
+            slot.onTake(playerIn, slotStack);
+        }
+        return returnStack;
     }
 }

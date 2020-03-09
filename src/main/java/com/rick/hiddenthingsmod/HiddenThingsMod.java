@@ -1,47 +1,33 @@
 package com.rick.hiddenthingsmod;
 
 import com.rick.hiddenthingsmod.Screens.Containers.HiddenChestContainer;
-import com.rick.hiddenthingsmod.blocks.HiddenChest;
-import com.rick.hiddenthingsmod.blocks.HiddenChestTile;
+import com.rick.hiddenthingsmod.blocks.*;
 import com.rick.hiddenthingsmod.items.SecretKey;
 import com.rick.hiddenthingsmod.lists.BlockList;
 import com.rick.hiddenthingsmod.lists.ItemList;
-import com.rick.hiddenthingsmod.lists.TileEntityList;
 import com.rick.hiddenthingsmod.setup.ClientProxy;
 import com.rick.hiddenthingsmod.setup.IProxy;
 import com.rick.hiddenthingsmod.setup.ModSetup;
 import com.rick.hiddenthingsmod.setup.ServerProxy;
 import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.audio.Sound;
 import net.minecraft.inventory.container.ContainerType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.extensions.IForgeContainerType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.fml.InterModComms;
+import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
-import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
-import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.registries.IForgeRegistryEntry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.util.stream.Collectors;
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod("hiddenthingsmod")
@@ -75,6 +61,7 @@ public class HiddenThingsMod {
     private void clientRegisties(final FMLCommonSetupEvent event) {
         // some preinit code
         LOGGER.info("clientRegisties registered");
+        ModelLoaderRegistry.registerLoader(new ResourceLocation(MODID, "hiddenchestloader"), new HiddenChestModelLoader());
     }
 
     @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -96,6 +83,7 @@ public class HiddenThingsMod {
         public static void registerBlocks(final RegistryEvent.Register<Block> event){
             event.getRegistry().registerAll(
                     BlockList.hidden_chest = new HiddenChest()
+
             );
 
             LOGGER.info("Blocks registered");
@@ -105,7 +93,7 @@ public class HiddenThingsMod {
         public static void registerTileEntity(final RegistryEvent.Register<TileEntityType<?>> event){
             event.getRegistry().register(TileEntityType.Builder.create(HiddenChestTile::new, BlockList.hidden_chest).build(null).setRegistryName(BlockList.hidden_chest.getRegistryName()));
 
-            LOGGER.info("Blocks registered");
+            LOGGER.info("Tile Entitys registered");
         }
 
         @SubscribeEvent
@@ -116,6 +104,4 @@ public class HiddenThingsMod {
             })).setRegistryName(BlockList.hidden_chest.getRegistryName()));
         }
     }
-
-
 }

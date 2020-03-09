@@ -12,6 +12,9 @@ public class HiddenChestScreen extends ContainerScreen<HiddenChestContainer> {
 
     private ResourceLocation GUI = new ResourceLocation(HiddenThingsMod.MODID, "textures/gui/hidden_chest_gui.png");
 
+    private int newXSize = this.xSize;
+    private int newYSize = this.ySize+38;
+
     public HiddenChestScreen(HiddenChestContainer container, PlayerInventory inv, ITextComponent name) {
         super(container, inv, name);
     }
@@ -19,10 +22,11 @@ public class HiddenChestScreen extends ContainerScreen<HiddenChestContainer> {
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+
         this.minecraft.getTextureManager().bindTexture(GUI);
-        int relX = (this.width - this.xSize) / 2;
-        int relY = (this.height - this.ySize) / 2;
-        this.blit(relX, relY, 0, 0, this.xSize, this.ySize);
+        int relX = (this.width - this.newXSize) / 2;
+        int relY = (this.height - this.newYSize) / 2;
+        this.blit(relX, relY, 0, 0, this.newXSize, this.newYSize);
     }
 
     @Override
@@ -34,7 +38,9 @@ public class HiddenChestScreen extends ContainerScreen<HiddenChestContainer> {
 
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-        this.font.drawString(this.title.getFormattedText(), 8.0F, 6.0F, 4210752);
-        this.font.drawString(this.playerInventory.getDisplayName().getFormattedText(), 8.0F, (float)(this.ySize - 96 + 2), 4210752);
+        this.font.drawString("Hidden Chest", 8.0F, -9.0F, 4210752);
+        this.font.drawString(this.playerInventory.getDisplayName().getFormattedText(), 8.0F, (float)(this.newYSize - 113 + 2), 4210752);
     }
+
+
 }
