@@ -22,7 +22,6 @@ import net.minecraftforge.common.extensions.IForgeContainerType;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -75,7 +74,6 @@ public class HiddenThingsMod {
                     //blocks
                     ItemList.hidden_chest = new BlockItem(BlockList.hidden_chest, group).setRegistryName(BlockList.hidden_chest.getRegistryName())
             );
-
             LOGGER.info("Items registered");
         }
 

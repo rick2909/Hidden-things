@@ -2,10 +2,6 @@ package com.rick.hiddenthingsmod.blocks;
 
 import com.rick.hiddenthingsmod.Screens.Containers.HiddenChestContainer;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.BlockModelShapes;
-import net.minecraft.client.renderer.model.IBakedModel;
-import net.minecraft.client.renderer.model.ModelResourceLocation;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.container.Container;
@@ -35,6 +31,7 @@ import net.minecraftforge.items.ItemStackHandler;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 import static com.rick.hiddenthingsmod.lists.TileEntityList.hidden_chest_tile;
@@ -42,8 +39,7 @@ import static com.rick.hiddenthingsmod.lists.TileEntityList.hidden_chest_tile;
 public class HiddenChestTile extends TileEntity implements ITickableTileEntity, INamedContainerProvider {
 
     private LazyOptional<IItemHandler> handler = LazyOptional.of(this::createHandler);
-
-    //private ArrayList<Item> allowedItems = new ArrayList<>();
+    private ArrayList<Item> allowedItems = new ArrayList<>();
 
     public static final ModelProperty<BlockState> MIMIC = new ModelProperty<>();
 
@@ -51,19 +47,56 @@ public class HiddenChestTile extends TileEntity implements ITickableTileEntity, 
 
     public HiddenChestTile() {
         super(hidden_chest_tile);
-//        for (ItemStack fooditem : BlockItem.) {
-//
-//        }
+        allowedItems.add(Items.STONE);
+        allowedItems.add(Items.COBBLESTONE);
+        allowedItems.add(Items.ACACIA_WOOD);
+        allowedItems.add(Items.BIRCH_WOOD);
+        allowedItems.add(Items.DARK_OAK_WOOD);
+        allowedItems.add(Items.JUNGLE_WOOD);
+        allowedItems.add(Items.OAK_WOOD);
+        allowedItems.add(Items.STRIPPED_ACACIA_WOOD);
+        allowedItems.add(Items.STRIPPED_BIRCH_WOOD);
+        allowedItems.add(Items.STRIPPED_SPRUCE_WOOD);
+        allowedItems.add(Items.STRIPPED_JUNGLE_WOOD);
+        allowedItems.add(Items.STRIPPED_DARK_OAK_WOOD);
+        allowedItems.add(Items.STRIPPED_OAK_WOOD);
+        allowedItems.add(Items.STRIPPED_DARK_OAK_LOG);
+        allowedItems.add(Items.STRIPPED_ACACIA_LOG);
+        allowedItems.add(Items.STRIPPED_JUNGLE_LOG);
+        allowedItems.add(Items.STRIPPED_BIRCH_LOG);
+        allowedItems.add(Items.STRIPPED_SPRUCE_LOG);
+        allowedItems.add(Items.STRIPPED_OAK_LOG);
+        allowedItems.add(Items.DARK_OAK_LOG);
+        allowedItems.add(Items.ACACIA_LOG);
+        allowedItems.add(Items.JUNGLE_LOG);
+        allowedItems.add(Items.BIRCH_LOG);
+        allowedItems.add(Items.SPRUCE_LOG);
+        allowedItems.add(Items.OAK_LOG);
+        allowedItems.add(Items.CHISELED_SANDSTONE);
+        allowedItems.add(Items.SANDSTONE);
+        allowedItems.add(Items.CUT_SANDSTONE);
+        allowedItems.add(Items.LAPIS_BLOCK);
+        allowedItems.add(Items.IRON_BLOCK);
+        allowedItems.add(Items.GOLD_BLOCK);
+        allowedItems.add(Items.BRICKS);
+        allowedItems.add(Items.OBSIDIAN);
+        allowedItems.add(Items.DIRT);
+        allowedItems.add(Items.OAK_PLANKS);
+        allowedItems.add(Items.SPRUCE_PLANKS);
+        allowedItems.add(Items.BIRCH_PLANKS);
+        allowedItems.add(Items.JUNGLE_PLANKS);
+        allowedItems.add(Items.ACACIA_PLANKS);
+        allowedItems.add(Items.DARK_OAK_PLANKS);
     }
 
 
 
     private boolean validBlock(ItemStack stack, boolean isInsert){
-        if(isInsert && !stack.isEmpty() && stack.getItem() instanceof BlockItem){
+        if(isInsert && !stack.isEmpty() && allowedItems.contains(stack.getItem())) {//stack.getItem() instanceof BlockItem){
             BlockState mimicState = ((BlockItem) stack.getItem()).getBlock().getDefaultState();
             this.setMinic(mimicState);
             return true;
-        }else if(!isInsert && !stack.isEmpty() && stack.getItem() instanceof BlockItem){
+        }else if(!isInsert && !stack.isEmpty() && allowedItems.contains(stack.getItem())) {//stack.getItem() instanceof BlockItem){
             return true;
         }
 
@@ -73,19 +106,13 @@ public class HiddenChestTile extends TileEntity implements ITickableTileEntity, 
     private IItemHandler createHandler() {
         return new ItemStackHandler(28) {
 
-//            @Override
-//            protected void onContentsChanged(int slot) {
-//                markDirty();
-//            }
-
-
-//            @Override
-//            public int getSlotLimit(int slot) {
-//                if(slot == 0){
-//                    return 1;
-//                }
-//                return super.getSlotLimit(slot);
-//            }
+            @Override
+            public int getSlotLimit(int slot) {
+                if(slot == 0){
+                    return 1;
+                }
+                return super.getSlotLimit(slot);
+            }
 
             @Override
             public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
@@ -99,11 +126,18 @@ public class HiddenChestTile extends TileEntity implements ITickableTileEntity, 
             @Nonnull
             @Override
             public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
-                System.out.println("insertItem: "+stack);
+                System.out.println("is removed: "+stack +"so simulate is: " + simulate);
                 if (slot == 0 && !validBlock(stack,true)) {
                     return stack;
                 }
                 return super.insertItem(slot, stack, simulate);
+            }
+
+            @Nonnull
+            @Override
+            public ItemStack extractItem(int slot, int amount, boolean simulate) {
+                setMinic(null);
+                return super.extractItem(slot, amount, simulate);
             }
         };
     }
