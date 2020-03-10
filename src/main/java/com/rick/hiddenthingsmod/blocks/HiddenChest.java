@@ -54,11 +54,10 @@ public class HiddenChest extends Block {
            TileEntity tileEntity = world.getTileEntity(pos);
            if(!item.isEmpty() && item.getItem() instanceof BlockItem){
                if(tileEntity instanceof HiddenChestTile){
-                   BlockState mimicState = ((BlockItem) item.getItem()).getBlock().getDefaultState();
-                   ((HiddenChestTile) tileEntity).setMinic(mimicState);
+                   return ActionResultType.SUCCESS;
                }
-               return ActionResultType.SUCCESS;
-           }else if(tileEntity instanceof INamedContainerProvider){
+           }else
+            if(tileEntity instanceof INamedContainerProvider){
                 NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) tileEntity, tileEntity.getPos());
             }
         }
